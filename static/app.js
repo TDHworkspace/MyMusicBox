@@ -91,24 +91,19 @@ function ajaxPlayMusic (musicSid) {
 			dataType: 'JSON',
 			data: {sid: musicSid,},
 		})
-		.done(function(res) {
-			if (res['result'] == true){
-				ajaxGetSong(musicSid);
-				$(".playbtn").each(function() {
-					$(this).html("正在播放");
-				});
+		.done(function() {
+			ajaxGetSong(musicSid);
+			$(".playbtn").each(function() {
+				$(this).html("正在播放");
+			});
 
-				$(".pausebtn").each(function() {
-					$(this).html("暂停");
-					$(this).attr({
-						onclick: "ajaxPauseMusic()"
-					});
+			$(".pausebtn").each(function() {
+				$(this).html("暂停");
+				$(this).attr({
+					onclick: "ajaxPauseMusic()"
 				});
-			}
-			else{
-				alert('播放失败');
-			}
-			
+			});
+
 			// $(".playbtn").html("正在播放");
 			// $(".pausebtn").html("暂停");
 			// $(".pausebtn").attr({
@@ -537,7 +532,7 @@ function ajaxGetSong (sid) {
 	})
 	.done(function(req) {
 		console.log(req);
-		$("#album_picurl").attr('src', req[0]['album_picurl']+'?param=240y240');
+		$("#album_picurl").attr('src', req[0]['album_picurl']);
 		$("#artist").html(req[0]['artist']);
 		$("#song_name").html(req[0]['song_name']);
 		$("#album_picurl").attr('onclick', 'ajaxPlayMusic(\''+req[0]['song_id']+'\')');
@@ -851,17 +846,11 @@ function ajaxreleasePlayListDb (sid) {
 			data: {'sid': sid},
 		})
 		.done(function(req) {
-			if(req['result'] == 1)
+			console.log("success");
+			if(req['result']==true)
 			{
 				alert("添加成功！");
 				releasePlayList(sid);
-				console.log("success");
-			}
-			else(req['result'] == -1){
-				alert('添加失败');
-			}
-			else(req['result'] == 2){
-				alert("歌曲已存在");
 			}
 			hideLoader();
 		})
